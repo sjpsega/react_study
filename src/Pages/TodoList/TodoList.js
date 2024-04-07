@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import TodoCell from '../Components/TodoCell';
+import { useState, useReducer } from 'react';
+import TodoCell from './Components/TodoCell';
+import todoReducer from './Reducer/TodoReducer'
 import { Typography, List, Input, Button, Space } from 'antd'
 const { Title, Text } = Typography;
 
@@ -20,45 +21,36 @@ const initialTodoListData = [{
                       }];
 
 export default function TodoList() {
-    const [todoListData, setTodoListData] = useState(initialTodoListData)
+    const [todos, dispatch] = useReducer(todoReducer, initialTodoListData)
     const [todoInputValue, setTodoInputValue] = useState('')
   
     function toggleIsComplate(id) {
-      const cloneTodoListData = [...todoListData]
-      const targetTodo = cloneTodoListData.find(todo=>
-        todo.id === id)
-        targetTodo.isComplete = !targetTodo.isComplete
-      setTodoListData(cloneTodoListData)
+      console.log("toggleIsComplate!!!")
+      dispatch({
+        type: 'changeComplate',
+        id: id
+      })
     }
   
     function changeContent(id, content) {
-      const cloneTodoListData = [...todoListData]
-      const targetTodo = cloneTodoListData.find(todo=>
-        todo.id === id)
-        targetTodo.content = content
-      setTodoListData(cloneTodoListData)
+      dispatch({
+        type: 'changeContent',
+        id: id,
+        content: content
+      })
     }
   
     function newTodo(content) {
       if (content.length == 0) {
         return 
       }
-      var id = 1;
-      const cloneTodoListData = [...todoListData]
-      if (cloneTodoListData.length > 0) {
-        let lastObj = cloneTodoListData[cloneTodoListData.length - 1]
-        id = lastObj.id
-        id ++
-      }
-      cloneTodoListData.push({
-        id:id,
-        content: content,
-        isComplete: false
+      dispatch({
+        type: 'add',
+        content: content
       })
-      setTodoListData(cloneTodoListData)
     }
   
-    const todoCells = todoListData.map(todo =>
+    const todoCells = todos.map(todo =>
       <List.Item key={todo.id}>
         <TodoCell todo={todo} onToggleIsComplate={toggleIsComplate} onChangeContent={changeContent}></TodoCell>
       </List.Item>
