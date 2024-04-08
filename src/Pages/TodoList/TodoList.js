@@ -1,5 +1,6 @@
 import { useState, useReducer } from 'react';
 import TodoCell from './Components/TodoCell';
+import GlobalData from '../../Common/GlobalData';
 import todoReducer from './Reducer/TodoReducer'
 import { Typography, List, Input, Button, Space } from 'antd'
 const { Title, Text } = Typography;
@@ -25,16 +26,15 @@ export default function TodoList() {
     const [todoInputValue, setTodoInputValue] = useState('')
   
     function toggleIsComplate(id) {
-      console.log("toggleIsComplate!!!")
       dispatch({
-        type: 'changeComplate',
+        type: GlobalData.Event.TodoList.ChangeComplate,
         id: id
       })
     }
   
     function changeContent(id, content) {
       dispatch({
-        type: 'changeContent',
+        type: GlobalData.Event.TodoList.ChangeContent,
         id: id,
         content: content
       })
@@ -45,7 +45,7 @@ export default function TodoList() {
         return 
       }
       dispatch({
-        type: 'add',
+        type: GlobalData.Event.TodoList.Add,
         content: content
       })
     }

@@ -1,7 +1,9 @@
+import GlobalData from "../../../Common/GlobalData";
+
 // @SEE: fix Array bug：https://zh-hans.react.dev/learn/updating-arrays-in-state
 export default function TodoReducer(todos, action) {
     switch(action.type) {
-        case 'add': {
+        case GlobalData.Event.TodoList.Add: {
             var id = 1;
             const cloneTodoListData = [...todos]
             if (cloneTodoListData.length > 0) {
@@ -14,10 +16,9 @@ export default function TodoReducer(todos, action) {
               content: action.content,
               isComplete: false
             })
-            console.log('add:', cloneTodoListData.length)
             return cloneTodoListData
         }
-        case 'changeContent': {
+        case GlobalData.Event.TodoList.ChangeContent: {
             return todos.map(todo=> {
                 if (todo.id === action.id ) {
                     return  {...todo, content:action.content }
@@ -26,7 +27,7 @@ export default function TodoReducer(todos, action) {
                 }
             })
         }
-        case 'changeComplate': {
+        case GlobalData.Event.TodoList.ChangeComplate: {
             return todos.map(todo=> {
                 if (todo.id === action.id ) {
                     return  {...todo, isComplete:!todo.isComplete }
