@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { add, 
+  addAsync,
   changeContent, 
   changeComplete, 
   selectTodoList
@@ -31,7 +32,7 @@ export default function TodoList() {
       if (content.length == 0) {
         return 
       }
-      dispatch(add({
+      dispatch(addAsync({
         content
       }))
     }

@@ -1,24 +1,25 @@
 import {createSlice} from '@reduxjs/toolkit'
 
+const initialState = [{
+  id:1,
+  content: 'Hedy Lamarr',
+  isComplete: false
+},
+{
+  id:2,
+  content: 'Hedy Lamarr2',
+  isComplete: false
+},
+{
+  id:3,
+  content: 'Hedy Lamarr3',
+  isComplete: true
+}]
+
 export const todoSlice = createSlice(
     {
         name: "todo",
-        initialState: [{
-          id:1,
-          content: 'Hedy Lamarr',
-          isComplete: false
-        },
-        {
-          id:2,
-          content: 'Hedy Lamarr2',
-          isComplete: false
-        },
-        {
-          id:3,
-          content: 'Hedy Lamarr3',
-          isComplete: true
-        }
-      ],
+        initialState: initialState,
         reducers: {
             add: (state, action) => {
                 var id = 0
@@ -49,6 +50,12 @@ export const todoSlice = createSlice(
         }
     }
 )
+
+export const addAsync = data => dispatch => {
+  setTimeout(() => {
+    dispatch(add(data))
+  }, 1000);
+}
 
 export const selectTodoList = state => state.todoList
 
