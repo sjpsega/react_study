@@ -6,9 +6,10 @@ import { add,
   changeComplete, 
   selectTodoList
 } from './Components/TodoSlice'
+import './TodoList.css';
 import TodoCell from './Components/TodoCell';
 import { Typography, List, Input, Button, Space } from 'antd'
-const { Title, Text } = Typography;
+const { Title, Text } = Typography
 
 export default function TodoList() {
     const todoList = useSelector(selectTodoList)
@@ -38,19 +39,18 @@ export default function TodoList() {
     }
   
     const todoCells = todoList.map(todo =>
-      <List.Item key={todo.id}>
+      <List.Item key={todo.id} align="center" className="list-item-center">
         <TodoCell todo={todo} onToggleIsComplate={toggleIsComplate} onChangeContent={changeTodoContent}></TodoCell>
       </List.Item>
     );
     return (
-      <div className="App">
-        <Title>TodoList</Title>
+      <>
         <Space align="center">
           <Text>New Todo</Text>
           <Input value={todoInputValue} onChange={e=>{
             setTodoInputValue(e.target.value)
           }}></Input>
-          <Button onClick={e=>{
+          <Button type='primary' onClick={e=>{
             newTodo(todoInputValue)
             setTodoInputValue('')
           }}>Add</Button>
@@ -58,6 +58,6 @@ export default function TodoList() {
         <List>
           {todoCells}
         </List>
-      </div>
+      </>
     );
 }
