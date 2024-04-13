@@ -27,7 +27,7 @@ export default function TodoCellEdit() {
             }}></Checkbox>
             <Input value={content} onChange={e => {
                 setContent(e.target.value)
-                dispatch(changeContent({ id: todo.id, content: e.target.value}))
+                dispatch(changeContent({ id: todo.id, content: e.target.value }))
             }}></Input>
             <Button type='primary' onClick={e=>{
                 navigate('/')

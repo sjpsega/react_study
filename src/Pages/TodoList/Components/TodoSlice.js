@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit'
+import { createSlice, nanoid } from '@reduxjs/toolkit'
 
 const initialState = [{
   id:1,
@@ -21,19 +21,19 @@ export const todoSlice = createSlice(
         name: "todo",
         initialState: initialState,
         reducers: {
-            add: (state, action) => {
-                var id = 0
-                const originTodoList = state
-                if (originTodoList.length > 0) {
-                    let lastObj = originTodoList[originTodoList.length - 1]
-                    id = lastObj.id
-                    id ++
+            add: {
+              reducer: (state, action) => {
+                state.push(action.payload)
+              },
+              prepare: (content, isComplete) => {
+                return {
+                  payload: {
+                    id: nanoid(),
+                    content: content,
+                    isComplete: isComplete
                   }
-                originTodoList.push({
-                    id:id,
-                    content: action.payload.content,
-                    isComplete: false
-                })
+                }
+              }
             },
             changeContent: (state, action) => {
               const target = state.find(element => element.id == action.payload.id)
@@ -53,7 +53,7 @@ export const todoSlice = createSlice(
 
 export const addAsync = data => dispatch => {
   setTimeout(() => {
-    dispatch(add(data))
+    dispatch(add(data.content, false))
   }, 1000);
 }
 
