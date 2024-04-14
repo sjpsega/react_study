@@ -1,17 +1,27 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import { add, 
+import { 
+  initTodos,
+  add, 
   addAsync,
   changeContent, 
   changeComplete, 
   selectTodoList
 } from './Components/TodoSlice'
+import API from './../../app/API'
 import './TodoList.css';
 import TodoCell from './Components/TodoCell';
 import { Typography, List, Input, Button, Space } from 'antd'
-const { Title, Text } = Typography
+const { Text } = Typography
+
 
 export default function TodoList() {
+    useEffect(() => {
+      API.get('/todoList')
+      .then( response => dispatch(initTodos(response.data)) )
+      .catch( error => console.log("error",error))
+    }, [])
+
     const todoList = useSelector(selectTodoList)
     const dispatch = useDispatch()
     const [todoInputValue, setTodoInputValue] = useState('')

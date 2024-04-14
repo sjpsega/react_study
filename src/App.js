@@ -2,8 +2,7 @@ import './App.css';
 import { 
   BrowserRouter, 
   Routes,
-  Route,
-  Navigate
+  Route
 } from 'react-router-dom'
 import TodoList from './Pages/TodoList/TodoList';
 import TodoCellEdit from './Pages/TodoList/Components/TodoCellEdit';

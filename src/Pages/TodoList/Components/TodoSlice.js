@@ -1,30 +1,24 @@
 import { createSlice, nanoid } from '@reduxjs/toolkit'
 
-const initialState = [{
-  id:1,
-  content: 'Hedy Lamarr',
-  isComplete: false
-},
-{
-  id:2,
-  content: 'Hedy Lamarr2',
-  isComplete: false
-},
-{
-  id:3,
-  content: 'Hedy Lamarr3',
-  isComplete: true
-}]
+const initialState = {
+  todos: [],
+  loading: false,
+  error: null
+}
 
 export const todoSlice = createSlice(
     {
         name: "todo",
         initialState: initialState,
         reducers: {
+            initTodos: (state, action) => {
+              state.todos = action.payload
+            },
             add: {
               reducer: (state, action) => {
-                state.push(action.payload)
+                state.todos.push(action.payload)
               },
+              // reducer 预处理
               prepare: (content, isComplete) => {
                 return {
                   payload: {
@@ -36,13 +30,13 @@ export const todoSlice = createSlice(
               }
             },
             changeContent: (state, action) => {
-              const target = state.find(element => element.id == action.payload.id)
+              const target = state.todos.find(element => element.id == action.payload.id)
               if(target) {
                 target.content =  action.payload.content
               }
             },
             changeComplete: (state, action) => {
-              const target = state.find(element => element.id == action.payload.id)
+              const target = state.todos.find(element => element.id == action.payload.id)
               if(target) {
                 target.isComplete = !target.isComplete
               }
@@ -57,7 +51,8 @@ export const addAsync = data => dispatch => {
   }, 1000);
 }
 
-export const selectTodoList = state => state.todoList
+export const selectTodoList = state => state.todoList.todos
+export const selectSingleTodo = (state, id) => state.todoList.todos.find(elelment => elelment.id == id)
 
-export const { add, changeContent, changeComplete} = todoSlice.actions
+export const { initTodos, add, changeContent, changeComplete} = todoSlice.actions
 export default todoSlice.reducer

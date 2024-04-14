@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { Checkbox, Input, Space, Button } from "antd";
-import { changeComplete, changeContent } from './TodoSlice'
+import { changeComplete, changeContent, selectSingleTodo } from './TodoSlice'
 import { useParams, useNavigate } from 'react-router-dom';
 
 export default function TodoCellEdit() {
@@ -9,7 +9,7 @@ export default function TodoCellEdit() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const todo = useSelector(state => {
-            return state.todoList.find(todo => (todo.id + "") == (id + ""))
+            return selectSingleTodo(state, id)
         }
     )
     const [isComplete, setIsComplete] = useState(todo.isComplete)
