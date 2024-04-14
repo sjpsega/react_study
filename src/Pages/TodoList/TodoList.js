@@ -1,29 +1,33 @@
 import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
 import { 
-  initTodos,
   add, 
-  addAsync,
+  addTodoAsync,
   changeContent, 
   changeComplete, 
-  selectTodoList
-} from './Components/TodoSlice'
+  selectTodoList,
+  selectTodoStatus,
+  fetchTodoList
+} from './TodoSlice'
 import API from './../../app/API'
+import { StatusEnum } from '../../app/consts'
 import './TodoList.css';
 import TodoCell from './Components/TodoCell';
-import { Typography, List, Input, Button, Space } from 'antd'
+import { Typography, List, Input, Button, Space, Spin } from 'antd'
 const { Text } = Typography
 
 
 export default function TodoList() {
-    useEffect(() => {
-      API.get('/todoList')
-      .then( response => dispatch(initTodos(response.data)) )
-      .catch( error => console.log("error",error))
-    }, [])
-
     const todoList = useSelector(selectTodoList)
+    const todoStatus = useSelector(selectTodoStatus)
     const dispatch = useDispatch()
+
+    useEffect(() => {
+      if (todoStatus == StatusEnum.IDLE) {
+        dispatch(fetchTodoList())
+      }
+    }, [todoStatus, dispatch])
+
     const [todoInputValue, setTodoInputValue] = useState('')
   
     function toggleIsComplate(id) {
@@ -43,8 +47,9 @@ export default function TodoList() {
       if (content.length == 0) {
         return 
       }
-      dispatch(addAsync({
-        content
+      dispatch(addTodoAsync({
+        content,
+        isComplete: false
       }))
     }
   
@@ -65,9 +70,11 @@ export default function TodoList() {
             setTodoInputValue('')
           }}>Add</Button>
         </Space>
-        <List>
-          {todoCells}
-        </List>
+        <Spin spinning={ todoStatus == StatusEnum.LOADING ? true : false}>
+          <List>
+            {todoCells}
+          </List>
+        </Spin>
       </>
     );
 }
