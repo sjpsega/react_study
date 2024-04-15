@@ -33,6 +33,9 @@ export const todoSlice = createSlice(
           })
           .addCase(fetchTodoList.fulfilled, (state, action) => {
             state.status = StatusEnum.SUCCEEDED
+            // @SEE: https://zh-hans.react.dev/learn/synchronizing-with-effects#how-to-handle-the-effect-firing-twice-in-development
+            // @FIXME: 这里做了简单处理，直接把返回结果设置为默认数据。防止首次渲染重复两次，导致数据重复
+            // state.todos = state.todos.concat(action.payload)
             state.todos = action.payload
           })
           .addCase(fetchTodoList.rejected, (state, action) => {
